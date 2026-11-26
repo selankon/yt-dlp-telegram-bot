@@ -87,6 +87,8 @@ variable. Available OS environment variables are:
 - `BEST_OF_AT`
 - `BEST_OF_COUNT`
 - `MESSAGES_FILE`
+- `YTDLP_UPDATE_CMD`
+- `BOT_UPDATE_CMD`
 
 The contents of the `YTDLP_COOKIES` environment variable will be written to the
 file `/tmp/ytdlp-cookies.txt`. This will be used by `yt-dlp` if it is running
@@ -121,6 +123,19 @@ messages YAML file, should be put in `/var/lib/yt-dlp-telegram-bot` too.
 
 To update the bot, install the new binary and run
 `sudo systemctl restart yt-dlp-telegram-bot`.
+
+## Updating from Telegram
+
+Set `YTDLP_UPDATE_CMD` (or `-ytdlp-update-cmd`) and `BOT_UPDATE_CMD` (or
+`-bot-update-cmd`) to shell commands, e.g. scripts that download the new
+binaries. Admins can then run them with the `/updateytdlp` and `/updatebot`
+commands. The bot replies with the command's output (and the new yt-dlp
+version after `/updateytdlp`). Commands are killed after 10 minutes.
+
+After a successful `/updatebot`, the bot exits with code 3 so systemd (with
+`Restart=on-failure` or `Restart=always`) starts the new binary. The commands
+run as the bot's user, so with the sample unit file the binaries they replace
+must be inside `ReadWritePaths`.
 
 ## Likes and "Best of"
 
@@ -158,6 +173,8 @@ fields are documented next to each key.
   needed) to 320k MP3
 - `/dlpcancel` - Cancel ongoing download
 - `/help` - Show the available commands
+- `/updateytdlp` - Run `YTDLP_UPDATE_CMD` (admins only)
+- `/updatebot` - Run `BOT_UPDATE_CMD` and restart (admins only)
 
 You don't need to enter the `/dlp` command if you send an URL to the bot using
 a private chat.

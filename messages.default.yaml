@@ -22,7 +22,7 @@ canceled: "❌ Canceled by user"
 no_active_request: "❌ Error: no active request to cancel"
 invalid_command: "❌ Error: invalid command"
 welcome: "🤖 Welcome! This bot downloads videos from various supported sources and then re-uploads them to Telegram, so they can be viewed with Telegram's built-in video player.\n\nMore info: https://github.com/nonoo/yt-dlp-telegram-bot"
-help: "🤖 Available commands:\n\n/dlp <url> - Download the video at the given URL\n/mp3 <url> - Download only the audio as a 320k MP3\n/dlpcancel - Cancel the ongoing download\n/help - Show this help\n\nYou can also just send a URL and it will be downloaded."
+help: "🤖 Available commands:\n\n/dlp <url> - Download the video at the given URL\n/mp3 <url> - Download only the audio as a 320k MP3\n/dlpcancel - Cancel the ongoing download\n/help - Show this help\n/updateytdlp, /updatebot - Update yt-dlp or the bot (admins only)\n\nYou can also just send a URL and it will be downloaded."
 # Fields: .Version
 bot_started: "🤖 Bot started, {{.Version}}"
 # Fields: .Version
@@ -31,6 +31,16 @@ bot_updated: "🤖 Bot updated, {{.Version}}"
 ytdlp_up_to_date: "yt-dlp version: {{.Current}} (up to date)"
 # Fields: .Current, .Latest
 ytdlp_update_needed: "📢 yt-dlp version: {{.Current}} 📢 Update needed! Latest version is {{.Latest}} 📢"
+update_not_configured: "❌ Error: no update command configured"
+update_already_running: "❌ Error: an update is already running"
+# Fields: .Target (ytdlp or bot)
+update_started: "🔄 Updating {{.Target}}..."
+# Fields: .Target, .Err, .Output
+update_failed: "❌ Updating {{.Target}} failed: {{.Err}}{{if .Output}}\n\n{{.Output}}{{end}}"
+# Fields: .Output, .Version
+update_ytdlp_done: "✅ yt-dlp updated{{if .Output}}\n\n{{.Output}}{{end}}\n\n{{.Version}}"
+# Fields: .Output
+update_bot_done: "✅ Bot updated, restarting...{{if .Output}}\n\n{{.Output}}{{end}}"
 
 # Likes and best-of (only used when LIKES_ENABLED=true)
 # Fields: .Count

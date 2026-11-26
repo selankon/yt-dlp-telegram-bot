@@ -30,6 +30,9 @@ type paramsType struct {
 
 	MessagesFile string
 
+	YtdlpUpdateCmd string
+	BotUpdateCmd   string
+
 	LikesEnabled bool
 	DBPath       string
 	BestOf       Schedule
@@ -65,6 +68,8 @@ func (p *paramsType) Init() error {
 	var maxSize string
 	flag.StringVar(&maxSize, "max-size", "", "allowed max size of video files")
 	flag.StringVar(&p.MessagesFile, "messages-file", "", "yaml file overriding bot messages")
+	flag.StringVar(&p.YtdlpUpdateCmd, "ytdlp-update-cmd", "", "shell command run by the /updateytdlp admin command")
+	flag.StringVar(&p.BotUpdateCmd, "bot-update-cmd", "", "shell command run by the /updatebot admin command, the bot exits to be restarted afterwards")
 	flag.BoolVar(&p.LikesEnabled, "likes", false, "enable like button and best-of reposts in groups")
 	flag.StringVar(&p.DBPath, "db-path", "", "sqlite database path (default bot.db)")
 	var bestOfInterval, bestOfAt string
@@ -256,6 +261,13 @@ func (p *paramsType) Init() error {
 		if err := LoadMessagesFile(p.MessagesFile); err != nil {
 			return err
 		}
+	}
+
+	if p.YtdlpUpdateCmd == "" {
+		p.YtdlpUpdateCmd = os.Getenv("YTDLP_UPDATE_CMD")
+	}
+	if p.BotUpdateCmd == "" {
+		p.BotUpdateCmd = os.Getenv("BOT_UPDATE_CMD")
 	}
 
 	// Writing env. var YTDLP_COOKIES contents to a file.

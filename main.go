@@ -149,6 +149,12 @@ func handleMessageContext(ctx context.Context, msgCtx *MessageContext) error {
 		case "dlpcancel":
 			handleCmdDLPCancel(ctx, msgCtx, messageText)
 			return nil
+		case "updateytdlp":
+			handleCmdUpdate(ctx, msgCtx, "ytdlp", params.YtdlpUpdateCmd)
+			return nil
+		case "updatebot":
+			handleCmdUpdate(ctx, msgCtx, "bot", params.BotUpdateCmd)
+			return nil
 		case "help":
 			fmt.Println("  (help cmd)")
 			_, _ = msgCtx.ReplyBuilder().Text(ctx, T("help", nil))
@@ -268,7 +274,9 @@ func main() {
 
 	client := telegram.NewClient(params.ApiID, params.ApiHash, opts)
 
-	if err := client.Run(context.Background(), func(ctx context.Context) error {
+	runCtx, cancel := context.WithCancel(context.Background())
+	stopBot = cancel
+	err = client.Run(runCtx, func(ctx context.Context) error {
 		status, err := client.Auth().Status(ctx)
 		if err != nil {
 			panic(fmt.Sprint("auth status err: ", err))
@@ -281,6 +289,7 @@ func main() {
 			}
 		}
 
+		botCtx = ctx
 		api := client.API()
 		telegramClient = client
 		telegramAPI = api
@@ -343,7 +352,11 @@ func main() {
 
 		<-ctx.Done()
 		return nil
-	}); err != nil {
+	})
+	if restartRequested.Load() {
+		os.Exit(restartExitCode)
+	}
+	if err != nil {
 		panic(err)
 	}
 }

@@ -23,7 +23,7 @@ canceled: "❌ Cancel·lat per l'usuari"
 no_active_request: "❌ Error: no hi ha cap petició activa per cancel·lar"
 invalid_command: "❌ Error: ordre no vàlida"
 welcome: "🤖 Benvingut/da! Aquest bot descarrega vídeos de diverses fonts compatibles i els torna a pujar a Telegram, perquè es puguin veure amb el reproductor de vídeo integrat de Telegram.\n\nMés informació: https://github.com/nonoo/yt-dlp-telegram-bot"
-help: "🤖 Ordres disponibles:\n\n/dlp <url> - Descarrega el vídeo de l'URL indicada\n/mp3 <url> - Descarrega només l'àudio en MP3 de 320k\n/dlpcancel - Cancel·la la descàrrega en curs\n/help - Mostra aquesta ajuda\n\nTambé pots enviar directament una URL i es descarregarà."
+help: "🤖 Ordres disponibles:\n\n/dlp <url> - Descarrega el vídeo de l'URL indicada\n/mp3 <url> - Descarrega només l'àudio en MP3 de 320k\n/dlpcancel - Cancel·la la descàrrega en curs\n/help - Mostra aquesta ajuda\n/updateytdlp, /updatebot - Actualitza yt-dlp o el bot (només administradors)\n\nTambé pots enviar directament una URL i es descarregarà."
 # Camps: .Version
 bot_started: "🤖 Bot iniciat, {{.Version}}"
 # Camps: .Version
@@ -32,6 +32,16 @@ bot_updated: "🤖 Bot actualitzat, {{.Version}}"
 ytdlp_up_to_date: "Versió de yt-dlp: {{.Current}} (actualitzada)"
 # Camps: .Current, .Latest
 ytdlp_update_needed: "📢 Versió de yt-dlp: {{.Current}} 📢 Cal actualitzar! La darrera versió és la {{.Latest}} 📢"
+update_not_configured: "❌ Error: no hi ha cap ordre d'actualització configurada"
+update_already_running: "❌ Error: ja hi ha una actualització en curs"
+# Camps: .Target (ytdlp o bot)
+update_started: "🔄 Actualitzant {{.Target}}..."
+# Camps: .Target, .Err, .Output
+update_failed: "❌ No s'ha pogut actualitzar {{.Target}}: {{.Err}}{{if .Output}}\n\n{{.Output}}{{end}}"
+# Camps: .Output, .Version
+update_ytdlp_done: "✅ yt-dlp actualitzat{{if .Output}}\n\n{{.Output}}{{end}}\n\n{{.Version}}"
+# Camps: .Output
+update_bot_done: "✅ Bot actualitzat, reiniciant...{{if .Output}}\n\n{{.Output}}{{end}}"
 
 # M'agrada i «El millor de...» (només amb LIKES_ENABLED=true)
 # Camps: .Count
